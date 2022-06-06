@@ -34,8 +34,6 @@ function TodoForm(props) {
         setInput('');
     };
 
-    
-    
 
     useEffect(()=>{
         setInterval(()=>{
