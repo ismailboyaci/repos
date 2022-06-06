@@ -32,6 +32,14 @@ function TodoList() {
     setTodos(copy)
   };
 
+  const unHandleToggle = (id, taskName) => {
+    var index = todos.findIndex(item => item.name === taskName)
+    var subindex = todos[index].subdata.findIndex(item => item.id === id)
+    const copy = [...todos]
+    copy[index].subdata[subindex].complete = false
+    setTodos(copy)
+  };
+
   const completeTask = (id) => {
 
     if (id.subdata.length > 0) {
@@ -47,7 +55,7 @@ function TodoList() {
 
   return (
     <Container>
-      <Todo todos={todos} handleToggle={handleToggle} completeTask={completeTask}/>
+      <Todo todos={todos} handleToggle={handleToggle} unHandleToggle={unHandleToggle} completeTask={completeTask}/>
       <TodoForm addTask={addTodo} addSubtask={addSubtask}  />
     </Container>
   )
