@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react';
 import { useState } from 'react'
 import { Button, Form, FormGroup, FormControl, Row } from 'react-bootstrap'
 
@@ -7,6 +8,7 @@ import { Button, Form, FormGroup, FormControl, Row } from 'react-bootstrap'
 function TodoForm(props) {
 
     const [input, setInput] = useState('');
+    const [open,setOpen]=useState('');
 
     const handleChange = (e) => {
         setInput(e.target.value)
@@ -34,7 +36,13 @@ function TodoForm(props) {
 
     
     
-    const open=(sessionStorage.getItem('open'))
+
+    useEffect(()=>{
+        setInterval(()=>{
+            setOpen(sessionStorage.getItem('open'))
+        })
+    },1000)
+    
     
 
     return (
