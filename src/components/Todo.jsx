@@ -44,7 +44,7 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle }) {
             {todos.map((task, index) => (
                 <ListGroup key={index} >
                     <ListGroupItem style={{ textDecoration: completeTask(task) ? 'line-through' : 'none',display: (editIndex === index || editIndex === null) ? 'block':'none'}} >
-                        {index + 1}....{task.name}....( {task.subdata.length} subtasks )
+                        {`${index+1}.  ${task.name}  ( ${task.subdata.length}subtasks ) `}
                         <Button size='sm' className='btn1' variant='outline-secondary' onClick={closeClick}>
                             Hide Subtasks
                         </Button>
@@ -54,13 +54,13 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle }) {
                     </ListGroupItem>
                     {task.subdata.filter(child => child.complete === false).map((child, index) => (
                         <ListGroupItem style={{ textDecoration: child.complete ? 'line-through' : '', display: open === task.name ? 'block' : 'none' }} key={index} className='mx-1'>
-                            {child.name}
+                            {`${index+1}.  ${child.name}`}
                             <Button size='sm' className='mx-5 btn1' variant='outline-dark' onClick={() => { handleToggle(child.id, taskName) }}>
                                 {<BsCheckLg />}
                             </Button>
                         </ListGroupItem>
                     ))}
-                    <ListGroupItem style={{ fontWeight: 'bold', display: open === task.name ? 'block' : 'none' }} className='mx-2'>
+                    <ListGroupItem style={{ fontWeight: 'bold', display: open === task.name ? 'block' : 'none' }} className='mx-1'>
                         Completed Subtasks
                     </ListGroupItem>
 

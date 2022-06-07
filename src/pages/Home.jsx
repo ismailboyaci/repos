@@ -42,12 +42,12 @@ const Home = () => {
     return (
 
         <Container >
-            <Row>
-                <Col className="mt-5">
+            <Row >
+                <Col className="mt-5 mx-5">
                     {userData.displayName} Repository
                 </Col>
                 <Col className="mt-5">
-                    Todo list
+                &nbsp;&nbsp; Todo List
                 </Col>
             </Row>
             <Row>
