@@ -53,7 +53,7 @@ function TodoForm(props) {
                     </Button>
                 </FormGroup>
             </Form>
-            <Form style={{ display:open==='1' ? 'block' :'none' }} className='mx-3' onSubmit={handleSubmitSubTask}>
+            <Form style={{ display:open==='1' ? 'block' :'none' }} className='px-4' onSubmit={handleSubmitSubTask}>
                 <FormGroup>
                     <FormControl type="text" placeholder="Add SubTask"  onChange={handleChange} value={input} />
                     <Button variant='dark' type='submit'  >

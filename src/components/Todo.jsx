@@ -10,28 +10,30 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle }) {
     const [open, setOpen] = useState();
     const [taskName, setTaskName] = useState('');
     const [openForm, setOpenForm] = useState(0);
+    const [editIndex, setEditIndex]= useState(null); 
 
 
-    const openClick = (name) => {
+    const openClick = (name,index) => {
         setOpen(name)
         setTaskName(name)
         setOpenForm(1)
+        setEditIndex(editIndex => editIndex === index ? null : index)
     };
 
     const closeClick = () => {
         setOpen()
         setOpenForm(0)
+        setEditIndex(null)
     };
 
 
 
     useEffect(() => {
         sessionStorage.setItem('name', taskName);
-    }, [taskName])
+    }, [taskName]);
     useEffect(() => {
         sessionStorage.setItem('open', openForm);
-    }, [openForm])
-
+    }, [openForm]);
 
 
 
@@ -40,21 +42,21 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle }) {
     return (
         <ListGroup>
             {todos.map((task, index) => (
-                <ListGroup key={index}>
-                    <ListGroupItem style={{ textDecoration: completeTask(task) ? 'line-through' : 'none'}} >
+                <ListGroup key={index} >
+                    <ListGroupItem style={{ textDecoration: completeTask(task) ? 'line-through' : 'none',display: (editIndex === index || editIndex === null) ? 'block':'none'}} >
                         {index + 1}....{task.name}....( {task.subdata.length} subtasks )
-                        <Button size='sm' className='mx-2' variant='outline-dark' onClick={() => { openClick(task.name) }}>
-                            Show Subtasks
-                        </Button>
-                        <Button size='sm' variant='outline-secondary' onClick={closeClick}>
+                        <Button size='sm' className='btn1' variant='outline-secondary' onClick={closeClick}>
                             Hide Subtasks
+                        </Button>
+                        <Button size='sm' className='mx-2 btn1' variant='outline-dark' onClick={() => { openClick(task.name,index) }}>
+                            Show Subtasks
                         </Button>
                     </ListGroupItem>
                     {task.subdata.filter(child => child.complete === false).map((child, index) => (
                         <ListGroupItem style={{ textDecoration: child.complete ? 'line-through' : '', display: open === task.name ? 'block' : 'none' }} key={index} className='mx-1'>
                             {child.name}
-                            <Button size='sm' className='mx-5' variant='outline-dark' onClick={() => { handleToggle(child.id, taskName) }}>
-                                {<BsCheckLg  />}
+                            <Button size='sm' className='mx-5 btn1' variant='outline-dark' onClick={() => { handleToggle(child.id, taskName) }}>
+                                {<BsCheckLg />}
                             </Button>
                         </ListGroupItem>
                     ))}
@@ -65,8 +67,8 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle }) {
                     {task.subdata.filter(child => child.complete === true).map((child, index) => (
                         <ListGroupItem style={{ textDecoration: child.complete ? 'line-through' : '', display: open === task.name ? 'block' : 'none' }} key={index} className='mx-2'>
                             {child.name}
-                            <Button size='sm' className='mx-5' variant='outline-dark' onClick={() => { unHandleToggle(child.id, taskName) }}>
-                            {<BsXLg  />}
+                            <Button size='sm' className='mx-5 btn1' variant='outline-dark' onClick={() => { unHandleToggle(child.id, taskName) }}>
+                                {<BsXLg />}
                             </Button>
                         </ListGroupItem>
                     ))}
