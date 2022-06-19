@@ -10,7 +10,7 @@ const Home = () => {
     
 
 
-    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
     const [repoData, setRepoData] = useState();
     
 
@@ -34,7 +34,7 @@ const Home = () => {
                     });
         }
         getrepos();
-    }, [])
+    }, [userData.providerData])
 
 
 

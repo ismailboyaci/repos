@@ -1,64 +1,70 @@
-import React from 'react'
-import todolist from '../data.json'
-import { useState } from 'react'
-import TodoForm from './TodoForm'
-import Todo from './Todo';
-import { Container } from 'react-bootstrap';
+import React from "react";
+import { useState } from "react";
+import TodoForm from "./TodoForm";
+import Todo from "./Todo";
+import { Container } from "react-bootstrap";
+
+//!redux
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, addSubTodo, setToggle, setUnToggle } from "../redux/reducer/todoReducer";
 
 function TodoList() {
 
-  const [todos, setTodos] = useState(todolist);
+  const todos = useSelector((state) => state.todos.todos);
+
+  const [open, setOpen] = useState('0')//if value = 1 show Add Subtask button, if value = 0 show Add Task button 
+
+  const dispatch = useDispatch();
+
   
 
-
-
-  const addTodo = todo => {
-    const newTodos = [...todos, todo]
-    setTodos(newTodos)
+  //!actions
+  // adding todo action
+  const addTodos = (todo) => {
+    dispatch(addTodo(todo));
   };
 
-  const addSubtask = (todo) => {
-    var index = todos.findIndex(item => item.name === sessionStorage.getItem('name'))
-    const copy = [...todos];
-    copy[index].subdata.push(todo)
-    setTodos(copy)
+  // adding subtodo action
+  const addSubTodos = (todo) => {
+    dispatch(addSubTodo(todo));
   };
 
-  const handleToggle = (id, taskName) => {
-    var index = todos.findIndex(item => item.name === taskName)
-    var subindex = todos[index].subdata.findIndex(item => item.id === id)
-    const copy = [...todos]
-    copy[index].subdata[subindex].complete = true
-    setTodos(copy)
+  //complete subtask function
+  const handleToggle = (id) => {
+    dispatch(setToggle(id))
   };
 
-  const unHandleToggle = (id, taskName) => {
-    var index = todos.findIndex(item => item.name === taskName)
-    var subindex = todos[index].subdata.findIndex(item => item.id === id)
-    const copy = [...todos]
-    copy[index].subdata[subindex].complete = false
-    setTodos(copy)
+  //uncomplete subtask function
+  const unHandleToggle = (id) => {
+    dispatch(setUnToggle(id))
   };
 
+  //if all subtasks complete then parent task complete
   const completeTask = (id) => {
-
     if (id.subdata.length > 0) {
-        let comp = true
-        for (var i = 0; i < id.subdata.length; i++) {
-            if (id.subdata[i].complete === true) {
-            } else {
-                comp = false
-            }
-        } return comp
-    }};
+      let comp = true;
+      for (var i = 0; i < id.subdata.length; i++) {
+        if (id.subdata[i].complete === true) {
+        } else {
+          comp = false;
+        }
+      }
+      return comp;
+    }
+  };
 
+  
+
+  const changeOpen = (e) =>{
+    setOpen(e)
+  }
 
   return (
     <Container>
-      <Todo todos={todos} handleToggle={handleToggle} unHandleToggle={unHandleToggle} completeTask={completeTask}/>
-      <TodoForm addTask={addTodo} addSubtask={addSubtask}  />
+      <Todo todos={todos} completeTask={completeTask} changeOpen={changeOpen} handleToggle={handleToggle} unHandleToggle={unHandleToggle}/>
+      <TodoForm addTask={addTodos} addSubtask={addSubTodos} open={open} />
     </Container>
-  )
+  );
 }
 
-export default TodoList
+export default TodoList;
