@@ -6,11 +6,16 @@ import { Container } from "react-bootstrap";
 
 //!redux
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, addSubTodo, setToggle, setUnToggle } from "../redux/reducer/todoReducer";
+//import { addTodo, addSubTodo, setToggle, setUnToggle } from "../redux/reducer/todoReducer";
+import { addTodo,addSubTodo,setToggle,setUnToggle } from '../redux/ducks/todoApp'
+
 
 function TodoList() {
-
-  const todos = useSelector((state) => state.todos.todos);
+  //redux toolkit
+  //const todos = useSelector((state) => state.todos.todos);
+  const todos= useSelector((state)=>state.todos)
+ 
+ 
 
   const [open, setOpen] = useState('0')//if value = 1 show Add Subtask button, if value = 0 show Add Task button 
 

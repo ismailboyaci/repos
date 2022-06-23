@@ -4,7 +4,8 @@ import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import { BsCheckLg, BsXLg } from "react-icons/bs";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { changeIndex } from "../redux/reducer/todoReducer";
+//import { changeIndex } from "../redux/reducer/todoReducer";
+import { changeIndex } from '../redux/ducks/todoApp'
 
 function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen }) {
 

@@ -5,12 +5,14 @@ import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import { appStore } from './redux/store';
+import { duckStore } from './redux/duckStore';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-   <Provider store={appStore}>
+   <Provider store={ duckStore }>
     <App />
     </Provider>
   </React.StrictMode>
