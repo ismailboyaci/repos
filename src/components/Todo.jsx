@@ -25,15 +25,17 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen })
 
   const openClick = (name, index) => {
     setShowSubtask(name);
-    setEditIndex((editIndex) => (editIndex === index ? null : index));
+    setEditIndex(index)
     setIndex(index);
     changeOpen('1') //for the appearance of the add task button if value = 1 show Add Subtask button
+    //console.log('show=>',showSubtask,'edit=>',editIndex)
   };
 
   const closeClick = () => {
     setShowSubtask(null);
     setEditIndex(null);
     changeOpen('0') //for the appearance of the add task button if value = 0 show Add Task button
+    //console.log('show=>',showSubtask,'edit=>',editIndex)
   };
 
   useEffect(() => {
