@@ -1,4 +1,4 @@
-import produce from "immer";
+
 
 const ADD_TODO = "ADD_TODO";
 const ADD_SUBTODO = "ADD_SUBTODO";
@@ -38,112 +38,144 @@ export function setUnToggle(index) {
 }
 
 const initialState = {
-  todos: [
-    {
-      id: 1,
+  todos: {
+    0: {
+      id: 0,
       name: "task1",
-      subdata: [
-        {
+      subdata: {
+        101: {
           id: 101,
           name: "subtask1",
           complete: false,
         },
-        {
+        102: {
           id: 102,
           name: "subtask2",
           complete: true,
         },
-      ],
+      },
     },
-    {
-      id: 2,
+    1: {
+      id: 1,
       name: "task2",
-      subdata: [
-        {
+      subdata: {
+        103: {
           id: 103,
           name: "subtask3",
           complete: false,
         },
-        {
+        104: {
           id: 104,
           name: "subtask4",
           complete: true,
         },
-      ],
+      },
     },
-    {
-      id: 3,
+    2: {
+      id: 2,
       name: "task3",
-      subdata: [
-        {
+      subdata: {
+        105: {
           id: 105,
           name: "subtask5",
           complete: true,
         },
-        {
+        106: {
           id: 106,
           name: "subtask6",
           complete: true,
         },
-      ],
+      },
     },
-    {
-      id: 4,
+    3: {
+      id: 3,
       name: "task4",
-      subdata: [
-        {
+      subdata: {
+        107: {
           id: 107,
           name: "subtask7",
           complete: false,
         },
-        {
+        108: {
           id: 108,
           name: "subtask8",
           complete: false,
         },
-        {
+        109: {
           id: 109,
           name: "subtask9",
           complete: false,
         },
-      ],
+      },
     },
-  ],
+  },
   index: 0,
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+
     case ADD_TODO:
-      const newTodo = state.todos.concat(action.payload);
-      return { ...state, todos: newTodo };
+
+      return {
+        ...state,
+        todos: { ...state.todos, [action.payload.id]: action.payload },
+      };
 
     case ADD_SUBTODO:
-      var newSubTodo = produce(state, (draftState) => {
-        draftState.todos[state.index].subdata.push(action.payload);
-      });
-      return newSubTodo;
+
+      const subState = {
+        ...state,
+        todos: {
+          ...state.todos,
+          [state.index + 1]: {
+            ...state.todos[state.index + 1],
+            subdata: {
+              ...state.todos[state.index + 1].subdata,
+              [action.payload.id]: action.payload,
+            },
+          },
+        },
+      };
+      return subState;
 
     case CHANGE_INDEX:
+
       let copyIndex = Object.assign({}, state, { index: action.payload });
       return copyIndex;
 
     case SET_TOGGLE:
-      var childIndex = state.todos[state.index].subdata.findIndex(
-        (item) => item.id === action.payload
-      );
-      var toggleState = produce(state, (draftState) => {
-        draftState.todos[state.index].subdata[childIndex].complete = true;
-      });
-      return toggleState;
+
+      return{
+        ...state,
+        todos: {
+          ...state.todos,
+          [state.index+1]: {
+            ...state.todos[state.index+1],
+            subdata: {
+              ...state.todos[state.index+1].subdata,
+              [action.payload]: {
+                ...state.todos[state.index+1].subdata[action.payload],complete:true}
+              },
+            },
+          },
+        };
 
     case SET_UNTOGGLE:
-      var newChildIndex = state.todos[state.index].subdata.findIndex(
-        (item) => item.id === action.payload
-      );
-      var unToggleState = produce(state, (draftState) => {
-        draftState.todos[state.index].subdata[newChildIndex].complete = false;
-      });
-      return unToggleState;
+
+      return{
+        ...state,
+        todos: {
+          ...state.todos,
+          [state.index+1]: {
+            ...state.todos[state.index+1],
+            subdata: {
+              ...state.todos[state.index+1].subdata,
+              [action.payload]: {
+                ...state.todos[state.index+1].subdata[action.payload],complete:false}
+              },
+            },
+          },
+        };
 
     default:
       return state;

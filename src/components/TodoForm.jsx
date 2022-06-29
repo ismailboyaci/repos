@@ -1,11 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Form, FormGroup, FormControl, Row } from "react-bootstrap";
-
+import { useSelector } from "react-redux";
 
 function TodoForm(props) {
-
   const [input, setInput] = useState("");
+  const todos = useSelector((state) => state.todos);
+ 
+  const taskId = Object.keys(todos).length + 1;
+  
+  
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -15,7 +19,7 @@ function TodoForm(props) {
   const handleSubmitTask = (e) => {
     e.preventDefault();
     props.addTask({
-      id: Math.floor(Math.random() * 1000),
+      id: taskId,
       name: input,
       subdata: [],
     });
@@ -31,7 +35,6 @@ function TodoForm(props) {
     });
     setInput("");
   };
-
 
   return (
     <Row>
