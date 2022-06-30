@@ -19,15 +19,14 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen })
 
   //parent index to add a child subtask
   const [index, setIndex] = useState(useSelector((state) => state.index));
-
   
   
   
 
-  const openClick = (name, index, id) => {
+  const openClick = (name, index) => {
     setShowSubtask(name);
     setEditIndex(index)
-    setIndex(id-1);
+    setIndex(index);
     changeOpen('1') //for the appearance of the add task button if value = 1 show Add Subtask button
     //console.log('show=>',showSubtask,'edit=>',editIndex)
   };
@@ -48,16 +47,16 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen })
 
   return (
     <ListGroup>
-      {Object.keys(todos).map((task, index) => (
+      {todos.map((task, index) => (
         <ListGroup key={index}>
           <ListGroupItem
             style={{
-              textDecoration: completeTask(todos[task].subdata) ? "line-through" : "none",
+              textDecoration: completeTask(task) ? "line-through" : "none",
               display:
                 editIndex === index || editIndex === null ? "block" : "none",
             }}
           >
-            {`${index + 1}.  ${todos[task].name}  ( ${Object.keys(todos[task].subdata).length  }  subtasks ) `}
+            {`${index + 1}.  ${task.name}  ( ${task.subdata.length}subtasks ) `}
             <Button
               size="sm"
               className="btn1"
@@ -71,30 +70,30 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen })
               className="mx-2 btn1"
               variant="outline-dark"
               onClick={() => {
-                openClick(todos[task].name, index, todos[task].id);
+                openClick(task.name, index);
               }}
             >
               Show Subtasks
             </Button>
           </ListGroupItem>
-          {Object.keys(todos[task].subdata)
-            .filter((child) => todos[task].subdata[child].complete === false)
+          {task.subdata
+            .filter((child) => child.complete === false)
             .map((child, index) => (
               <ListGroupItem
                 style={{
                   textDecoration: child.complete ? "line-through" : "",
-                  display: showSubtask === todos[task].name ? "block" : "none",
+                  display: showSubtask === task.name ? "block" : "none",
                 }}
                 key={index}
                 className="mx-1"
               >
-                {`${index + 1}.  ${todos[task].subdata[child].name}`}
+                {`${index + 1}.  ${child.name}`}
                 <Button
                   size="sm"
                   className="mx-5 btn1"
                   variant="outline-dark"
                   onClick={() => {
-                    handleToggle(todos[task].subdata[child].id);
+                    handleToggle(child.id);
                   }}
                 >
                   {<BsCheckLg />}
@@ -104,31 +103,31 @@ function Todo({ todos, handleToggle, completeTask, unHandleToggle, changeOpen })
           <ListGroupItem
             style={{
               fontWeight: "bold",
-              display: showSubtask === todos[task].name ? "block" : "none",
+              display: showSubtask === task.name ? "block" : "none",
             }}
             className="mx-1"
           >
             Completed Subtasks
           </ListGroupItem>
 
-          {Object.keys(todos[task].subdata)
-            .filter((child) => todos[task].subdata[child].complete === true)
+          {task.subdata
+            .filter((child) => child.complete === true)
             .map((child, index) => (
               <ListGroupItem
                 style={{
-                  textDecoration: todos[task].subdata[child].complete ? "line-through" : "",
-                  display: showSubtask === todos[task].name ? "block" : "none",
+                  textDecoration: child.complete ? "line-through" : "",
+                  display: showSubtask === task.name ? "block" : "none",
                 }}
                 key={index}
                 className="mx-2"
               >
-                {todos[task].subdata[child].name}
+                {child.name}
                 <Button
                   size="sm"
                   className="mx-5 btn1"
                   variant="outline-dark"
                   onClick={() => {
-                    unHandleToggle(todos[task].subdata[child].id);
+                    unHandleToggle(child.id);
                   }}
                 >
                   {<BsXLg />}
